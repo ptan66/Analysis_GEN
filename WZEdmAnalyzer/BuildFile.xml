@@ -1,0 +1,19 @@
+<use   name="FWCore/Framework"/>
+<use   name="FWCore/Utilities"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="FWCore/ParameterSet"/>
+<use   name="FWCore/ServiceRegistry"/>
+<use   name="DataFormats/Common"/>
+<use   name="MagneticField/Engine"/>
+<use   name="MagneticField/Records"/>
+<use   name="MagneticField/UniformEngine"/>
+<use   name="rootrflx"/>
+<use   name="DataFormats/Math"/>
+<use   name="lhapdf"/>
+<use   name="CLHEP"/>
+<use   name="root"/>
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/Luminosity"/>
+<use name="PhysicsTools/UtilAlgos"/>
+
+<flags   EDM_PLUGIN="1"/>
