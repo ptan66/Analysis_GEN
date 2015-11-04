@@ -221,6 +221,8 @@ WZEdmAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   bool hasLHE = //iEvent.getByType( lheEventInfo );
     iEvent.getByLabel( LHEEventProductTag_, lheEventInfo );
 
+  if (hasLHE)  copyLHEweights( myEvent, lheEventInfo.product() );
+
   this->fillMCInfo(genParticles,            myMCTruth);
   //  this->fillGenWZ(genParticles,             myGenWZ);
   this->fillGenTTbar(genParticles,          myEvent->getGenTTbar() );

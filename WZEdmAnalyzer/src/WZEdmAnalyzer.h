@@ -115,6 +115,8 @@ class WZEdmAnalyzer : public edm::EDAnalyzer {
 
   void   fillGenEventInfo(edm::Handle<GenEventInfoProduct> &genEvtInfo, _gen_eventInfo_ *myGenEvtInfo);
 
+  void   copyLHEweights(_event_ *myevt,  const LHEEventProduct * LHEevt);
+
   void   fillMCInfo(Handle<edm::HepMCProduct>  &mcTruth,   _mc_process_ *mc);
   void   fillMCInfo(Handle<reco::GenParticleCollection> &genParticles,  _mc_process_ *mc);
   void   fillGenTTbar(Handle<reco::GenParticleCollection> &genParticles,  _gen_ttbar_ *genttbar);

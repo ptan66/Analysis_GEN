@@ -1771,6 +1771,10 @@ void _event_::reset() {
   timeHigh          = -1;
 
   eventWeight       = 1.0;
+  numOfWeights      = 0;
+  for (unsigned jj =0; jj < MAX_WEIGHTS; jj ++) weights[jj] = 0;
+
+
   BField            = -1;
   rho = 0;
   rhoIso = 0;
@@ -1863,6 +1867,9 @@ void _event_::Clear() {
   timeHigh        = -1;
 
   eventWeight     = 1.0;
+  numOfWeights      = 0;
+  for (unsigned jj =0; jj < MAX_WEIGHTS; jj ++) weights[jj] = 0;
+
   BField          = -1;
 
   rho             = 0; sigma    = 0;

@@ -87,7 +87,7 @@
 #include "AnalysisTools.h"
 #include "EdmAnalysisTools.h"
 #include "lhapdfcc.h"
-
+#include "weightIndex.h"
 
 using namespace std;
 
@@ -118,6 +118,42 @@ void WZEdmAnalyzer::fillGenEventInfo(edm::Handle<GenEventInfoProduct> &genEvtInf
   myGenEvtInfo -> alphaQCD        = genEvtInfo->alphaQCD();
   myGenEvtInfo -> alphaQED        = genEvtInfo->alphaQED();
 
+}
+
+
+void WZEdmAnalyzer::copyLHEweights(_event_ *myevt,  const LHEEventProduct * LHEevt) {
+  if (!LHEevt) return;
+
+  myevt->numOfWeights = LHEevt->weights().size();
+
+  for (unsigned int ii=0; ii< LHEevt->weights().size(); ii ++) {
+    myevt->weights[ii] =  LHEevt->weights()[ii].wgt;
+
+    // std::cout << setw(15) <<  myevt->weights[ii] ;
+  }
+
+  //  std::cout << LHEevt->weights()[scaleVariationsStartIndex()].id << std::endl;
+
+  //  std::cout << LHEevt->weights()[scaleVariationsStartIndex()].id << std::endl;
+  //  std::cout << LHEevt->weights()[nnpdf3VariationsStartIndex()].id << std::endl;
+  //  std::cout << LHEevt->weights()[nnpdf3AlphasVariationsStartIndex()].id << std::endl;
+
+  //  std::cout << LHEevt->weights()[ct10VariationsStartIndex()].id << std::endl;
+  //  std::cout << LHEevt->weights()[ct10AlphasVariationsStartIndex()].id << std::endl;
+
+
+  //  std::cout << LHEevt->weights()[mmht2014VariationsStartIndex()].id << std::endl;
+  //  std::cout << LHEevt->weights()[mmht2014AlphasVariationsStartIndex()].id << std::endl;
+
+
+  //  std::cout << LHEevt->weights()[ct14VariationsStartIndex()].id << std::endl;
+  //  std::cout << LHEevt->weights()[ct14AlphasVariationsStartIndex()].id << std::endl;
+
+
+  //  std::cout << LHEevt->weights()[sthw2VariationsStartIndex()].id << std::endl;
+
+
+  //  std::cout << std::endl;
 }
 
 void WZEdmAnalyzer::fillGenTTbar(Handle<reco::GenParticleCollection> &genParticles,  _gen_ttbar_ *genttbar) {
@@ -411,7 +447,7 @@ const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, ma
 
   if (!born_level) return 0;
 
-const  Candidate *bare_level =0;
+  const  Candidate *bare_level =0;
   std::list< const Candidate * > alist;
   std::list< const Candidate * > photons;
 

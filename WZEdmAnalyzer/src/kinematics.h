@@ -13,6 +13,7 @@
 #define MAXL1TRIGGERBITS 256
 
 #define MAX_TRIG_WORD    4
+#define MAX_WEIGHTS      1500
 
 #define EDM_MAX_LENGTH   0x6
 
@@ -1229,6 +1230,9 @@ class _event_ : public TObject{
   Long_t              timeLow,         timeHigh;
 
   Float_t             eventWeight,     BField;
+
+  Int_t               numOfWeights;
+  Double_t            weights[MAX_WEIGHTS];
 
   Float_t             rho,   rhoIso,   rhoCh,   rhoCh2p4;
   Float_t             sigma, sigmaIso, sigmaCh, sigmaCh2p4;
