@@ -32,7 +32,7 @@ process.GlobalTag.globaltag = 'START53_V27::All'
 process.maxEvents = cms.untracked.PSet(  input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource", 
        	fileNames = cms.untracked.vstring(
-        'file:/uscms_data/d2/ptan/work/sl6/development/CMSSW_5_3_30/src/had.root'
+        'file:/eos/uscms/store/user/ptan/LHEfiles/Powheg/test/test.lhe'
     )
 )
 
