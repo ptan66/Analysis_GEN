@@ -449,6 +449,7 @@ _hlt_info_::_hlt_info_() {
   HLT_NonIsoMuon     = 0;
   HLT_Muon           = 0;
   HLT_MuonL          = 0;
+  HLT_MuonH          = 0;
 
   HLT_MuonElectron   = 0;
   HLT_ElectronMuon   = 0;
@@ -814,6 +815,10 @@ _electron_::_electron_():_track_() {
    pfRelIsoR03EA                =0;
 
 
+   ecalPFClusterIso             =0;
+   hcalPFClusterIso             =0;
+
+
   // shower shape variables
    sigmaEtaEta                  =0; 
    sigmaIetaIeta                =0; 
@@ -1125,6 +1130,7 @@ _gen_jet_::_gen_jet_() {
   phi           = DEFAULT_VAL;
   mass          = DEFAULT_VAL;
   mc_flavor     = DEFAULT_VAL;
+  mc_partonFlavor = DEFAULT_VAL;
   nConstituent  = DEFAULT_VAL;
 }
 _gen_jet_::_gen_jet_ (const _gen_jet_ & orig) : TObject(orig){}
@@ -1185,7 +1191,9 @@ _jet_::_jet_() {
 
 
   // MC information
-   mc_flavor=0;mc_pt=0;mc_eta=0;mc_phi=0;
+   mc_flavor=DEFAULT_VAL;
+   mc_partonFlavor = DEFAULT_VAL;
+   mc_pt=0;mc_eta=0;mc_phi=0;
 
 
    for (int ii = 0; ii < EDM_MAX_LENGTH; ii ++) {
@@ -1404,6 +1412,12 @@ _event_::_event_() {
   hltMuonLleg1s     = new TClonesArray("_vec4_", 10);
   hltMuonLleg2s     = new TClonesArray("_vec4_", 10);
 
+  hltMuonHs         = new TClonesArray("_vec4_", 10);
+  hltMuonHleg1s     = new TClonesArray("_vec4_", 10);
+  hltMuonHleg2s     = new TClonesArray("_vec4_", 10);
+
+
+
   hltMuonElectrons  = new TClonesArray("_vec4_", 10);
   hltElectronMuons  = new TClonesArray("_vec4_", 10);
 
@@ -1491,6 +1505,37 @@ _vec4_ *_event_::addHLTMuonLleg2() {
    _vec4_ *hltMuonLleg2 = new(my_hltMuonLleg2s[hltMuonLleg2Num++]) _vec4_();
    return hltMuonLleg2;
 }
+
+
+
+
+_vec4_ *_event_::addHLTMuonH() {
+
+   TClonesArray &my_hltMuonHs = *hltMuonHs;
+
+   _vec4_ *hltMuonH = new(my_hltMuonHs[hltMuonHNum++]) _vec4_();
+   return hltMuonH;
+}
+
+
+_vec4_ *_event_::addHLTMuonHleg1() {
+
+   TClonesArray &my_hltMuonHleg1s = *hltMuonHleg1s;
+
+   _vec4_ *hltMuonHleg1 = new(my_hltMuonHleg1s[hltMuonHleg1Num++]) _vec4_();
+   return hltMuonHleg1;
+}
+
+
+_vec4_ *_event_::addHLTMuonHleg2() {
+
+   TClonesArray &my_hltMuonHleg2s = *hltMuonHleg2s;
+
+   _vec4_ *hltMuonHleg2 = new(my_hltMuonHleg2s[hltMuonHleg2Num++]) _vec4_();
+   return hltMuonHleg2;
+}
+
+
 
 
 
@@ -1802,6 +1847,14 @@ void _event_::reset() {
   hltMuonLleg1Num      = 0;
   hltMuonLleg2Num      = 0;
 
+
+  hltMuonHNum          = 0;
+  hltMuonHleg1Num      = 0;
+  hltMuonHleg2Num      = 0;
+
+
+
+
   hltMuonElectronNum   = 0;
   hltElectronMuonNum   = 0;
 
@@ -1896,6 +1949,12 @@ void _event_::Clear() {
   hltMuonLleg1Num      = 0;  hltMuonLleg1s     ->Clear();
   hltMuonLleg2Num      = 0;  hltMuonLleg2s     ->Clear();
 
+
+  hltMuonHNum          = 0;  hltMuonHs         ->Clear();
+  hltMuonHleg1Num      = 0;  hltMuonHleg1s     ->Clear();
+  hltMuonHleg2Num      = 0;  hltMuonHleg2s     ->Clear();
+
+
   hltMuonElectronNum   = 0;  hltMuonElectrons  ->Clear();
   hltElectronMuonNum   = 0;  hltElectronMuons  ->Clear();
 
@@ -1976,6 +2035,11 @@ _vec4_ *addHLTMuon(_event_ *aEvent)       {return aEvent->addHLTMuon();}
 _vec4_ *addHLTMuonL(_event_ *aEvent)      {return aEvent->addHLTMuonL();}
 _vec4_ *addHLTMuonLleg1(_event_ *aEvent)  {return aEvent->addHLTMuonLleg1();}
 _vec4_ *addHLTMuonLleg2(_event_ *aEvent)  {return aEvent->addHLTMuonLleg2();}
+
+
+_vec4_ *addHLTMuonH(_event_ *aEvent)      {return aEvent->addHLTMuonH();}
+_vec4_ *addHLTMuonHleg1(_event_ *aEvent)  {return aEvent->addHLTMuonHleg1();}
+_vec4_ *addHLTMuonHleg2(_event_ *aEvent)  {return aEvent->addHLTMuonHleg2();}
 
 
 _vec4_ *addHLTMuonElectron(_event_ *aEvent){return aEvent->addHLTMuonElectron();}
