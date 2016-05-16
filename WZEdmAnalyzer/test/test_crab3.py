@@ -12,11 +12,11 @@ config.JobType.psetName = 'had_ntuplizer.py'
 
 
 
-config.Data.outputPrimaryDataset = 'Z_ee_nnloNNPDF30_8TeV_testme'
-config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhe_runv1.txt').readlines()
+config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_testme'
+config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhes.txt').readlines()
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob =20
-config.Data.outLFNDirBase = '/store/user/ptan/Ntuple2015/GEN8TeV/Zee'
+config.Data.outLFNDirBase = '/store/group/lpclljj/WMA/GEN8TeV/Zee'
 config.Data.publication = False
 
 
