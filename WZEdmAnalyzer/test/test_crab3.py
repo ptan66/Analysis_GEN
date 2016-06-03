@@ -7,19 +7,20 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 
 config.JobType.pluginName = 'Analysis'
-#config.JobType.generator  = 'lhe'
 config.JobType.psetName = 'had_ntuplizer.py'
+#config.JobType.psetName = 'had_ntuplizer_photos.py'
 
 
 
-config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_testme'
-config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhes.txt').readlines()
+config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV'
+#config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_photos'
+config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhes_fsr.txt').readlines()
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob =20
-config.Data.outLFNDirBase = '/store/group/lpclljj/WMA/GEN8TeV/Zee'
+config.Data.outLFNDirBase = '/store/group/lpclljj/noreplica/WMA/GEN8TeV/Zee'
 config.Data.publication = False
 
 
 config.Site.storageSite = 'T3_US_FNALLPC'
-config.Site.whitelist   = ['T3_US_FNALLPC', 'T1_US_FNAL']
-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+#config.Site.whitelist   = ['T3_US_FNALLPC', 'T1_US_FNAL']
+#config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']

@@ -145,9 +145,14 @@ void _gen_DrellYan_::Initialize() {
    pdaugPtDress= 0; pdaugEtaDress= 0; pdaugMDress= 0; pdaugPhiDress= 0; 
 
 
+   pdaugPtDressPhotos= 0; pdaugEtaDressPhotos= 0; pdaugMDressPhotos= 0; pdaugPhiDressPhotos= 0; 
+
+
    mdaugPt= 0; mdaugEta= 0; mdaugM= 0; mdaugPhi= 0; mdaugID=0;
    mdaugPtFSR= 0; mdaugEtaFSR= 0; mdaugMFSR= 0; mdaugPhiFSR= 0; 
    mdaugPtDress= 0; mdaugEtaDress= 0; mdaugMDress= 0; mdaugPhiDress= 0; 
+
+   mdaugPtDressPhotos= 0; mdaugEtaDressPhotos= 0; mdaugMDressPhotos= 0; mdaugPhiDressPhotos= 0; 
 
    numberOfJets=0;
    numOfParticles=0; 

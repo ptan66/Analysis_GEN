@@ -441,6 +441,135 @@ void WZEdmAnalyzer::fillGenTTbar(Handle<reco::GenParticleCollection> &genParticl
 }
 
 
+const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, math::PtEtaPhiMLorentzVector &dressed) {
+
+  dressed = math::PtEtaPhiMLorentzVector(0, 0, 0, 0);
+
+  const  Candidate *bare_level =0;
+  std::list< const Candidate * > alist;
+
+  if (!alevel) return bare_level;
+
+  bare_level = alevel;
+  alist.resize(0); 
+  alist.push_back( bare_level );
+
+  while (alist.size() ) {
+
+    const Candidate *cand = alist.front();
+
+
+    for (unsigned int ss =0; ss <  cand->numberOfDaughters();ss ++) {
+      
+      const Candidate * daug = cand->daughter(ss);
+
+
+      /*
+      std::cout << setw(20) << "daughter particle " << setw(5) << ss 
+		<< setw(5)  << daug->pdgId()
+		<< setw(5)  << daug->status()
+		<< setw(15) << daug->pt()		
+		<< setw(15) << daug->eta()
+		<< setw(15) << daug->phi()
+		<< setw(15) << daug->mass()
+		<< setw(15) << daug->charge()
+		<< std::endl;
+
+      */
+
+
+      if (daug->pdgId() == alevel->pdgId()) {
+	    
+	if (daug->status() == 1)  { 
+	  bare_level = daug;
+	  
+	} else {
+	  
+	  alist.push_back( daug );
+	}
+      } // search for dressed lepton
+
+
+    }
+    alist.pop_front();
+  }
+
+
+ 
+  if (!bare_level) return bare_level;
+
+  dressed = math::PtEtaPhiMLorentzVector(bare_level->pt(), 
+					 bare_level->eta(), 
+					 bare_level->phi(), 
+					 bare_level->mass() );
+
+  if (alevel->numberOfMothers() ==0) return bare_level;
+
+  // find FSR photons
+  const Candidate *mom = alevel->mother( 0) ;
+
+  if ( ( abs(mom->pdgId()) != 22)
+       && ( abs(mom->pdgId()) != 23)
+       && ( abs(mom->pdgId()) != 24) ) return bare_level;
+
+
+  std::list< const Candidate * > photons;
+  photons.resize(0);
+
+  //  std::cout << "new entry: search for FSR photons" << std::endl;
+  for (unsigned int ss =0; ss <  mom->numberOfDaughters();ss ++) {
+
+    const Candidate *daug = mom->daughter(ss);
+    
+    if ( abs(daug->pdgId())  != 22) continue;
+    if ( abs(daug->status()) != 1) {
+
+      std::cout << "warning: photon status code is not 1 " << std::endl;
+    }
+
+    photons.push_back( daug );
+
+    /*	 
+	 std::cout << setw(20) << "daughter particle " 
+	 << setw(5) << ss 
+	 << setw(5)  << daug->pdgId()
+	 << setw(5)  << daug->status()
+	 << setw(15) << daug->pt()		
+	 << setw(15) << daug->eta()
+	 << setw(15) << daug->phi()
+	 << setw(15) << daug->mass()
+	 << setw(15) << daug->charge()
+	 << std::endl;
+    */
+    
+  }
+
+  //  std::cout << "number of photons = " << photons.size() << std::endl;
+    
+  while (photons.size()) {
+      
+    const Candidate *cand = photons.front();
+      
+    if ( ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) < 0.1 ) {
+      
+      dressed += math::PtEtaPhiMLorentzVector(cand->pt(), 
+					      cand->eta(), 
+					      cand->phi(), 
+					      0 );
+      
+    }
+    
+    photons.pop_front();
+  }
+
+
+
+  return bare_level;
+}
+
+
+
+
 const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, math::PtEtaPhiMLorentzVector &dressed) {
 
   dressed = math::PtEtaPhiMLorentzVector(0, 0, 0, 0);
@@ -577,6 +706,10 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
   math::PtEtaPhiMLorentzVector dressed_mdaug(0, 0, 0, 0);
 
 
+  math::PtEtaPhiMLorentzVector dressed_pdaug_photos(0, 0, 0, 0);
+  math::PtEtaPhiMLorentzVector dressed_mdaug_photos(0, 0, 0, 0);
+
+
 
   //  bool sherpa_like = false;
   //  std::cout << "a new event " << std::endl;
@@ -686,11 +819,16 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
 	  pdaug    = daug;
 	  pdaugFSR = genLevelLeptons( pdaug, dressed_pdaug);
 
+	  //const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *bare_level, math::PtEtaPhiMLorentzVector &dressed) {
+	  genLevelLeptonsPhotos(    daug, dressed_pdaug_photos);
+
 
 	} else if ( daug->pdgId() < 0 && abs(daug->pdgId()) <=16 ) {
 	  
 	  mdaug    = daug;
 	  mdaugFSR = genLevelLeptons( mdaug, dressed_mdaug);
+
+	  genLevelLeptonsPhotos(    daug, dressed_mdaug_photos);
 
 	}
 
@@ -855,10 +993,18 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
  }
 
 
- gendrellyan->pdaugPtDress = dressed_pdaug.Pt();
+
+ gendrellyan->pdaugPtDressPhotos  = dressed_pdaug_photos.Pt();
+ gendrellyan->pdaugEtaDressPhotos = dressed_pdaug_photos.Eta();
+ gendrellyan->pdaugPhiDressPhotos = dressed_pdaug_photos.Phi();
+ gendrellyan->pdaugMDressPhotos   = dressed_pdaug_photos.M();
+ 
+
+
+ gendrellyan->pdaugPtDress  = dressed_pdaug.Pt();
  gendrellyan->pdaugEtaDress = dressed_pdaug.Eta();
  gendrellyan->pdaugPhiDress = dressed_pdaug.Phi();
- gendrellyan->pdaugMDress = dressed_pdaug.M();
+ gendrellyan->pdaugMDress   = dressed_pdaug.M();
  
 
  if (pdaugFSR) {
@@ -905,6 +1051,11 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
    }
 
 
+
+ gendrellyan->mdaugPtDressPhotos = dressed_mdaug_photos.Pt();
+ gendrellyan->mdaugEtaDressPhotos = dressed_mdaug_photos.Eta();
+ gendrellyan->mdaugPhiDressPhotos = dressed_mdaug_photos.Phi();
+ gendrellyan->mdaugMDressPhotos = dressed_mdaug_photos.M();
 
  gendrellyan->mdaugPtDress = dressed_mdaug.Pt();
  gendrellyan->mdaugEtaDress = dressed_mdaug.Eta();
