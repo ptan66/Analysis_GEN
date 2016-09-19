@@ -148,11 +148,34 @@ void _gen_DrellYan_::Initialize() {
    pdaugPtDressPhotos= 0; pdaugEtaDressPhotos= 0; pdaugMDressPhotos= 0; pdaugPhiDressPhotos= 0; 
 
 
+   pdaugPhotonPt =0;
+   pdaugPhotonEta=0;
+   pdaugPhotonPhi=0;
+   pdaugPhoton_rdR01_04 =0;
+   pdaugPhotonPtPhotos    = 0;
+   pdaugPhotonEtaPhotos   = 0;
+   pdaugPhotonPhiPhotos   = 0;
+   pdaugPhotonPhotos_rdR01_04  = 0;
+
+
+
    mdaugPt= 0; mdaugEta= 0; mdaugM= 0; mdaugPhi= 0; mdaugID=0;
    mdaugPtFSR= 0; mdaugEtaFSR= 0; mdaugMFSR= 0; mdaugPhiFSR= 0; 
    mdaugPtDress= 0; mdaugEtaDress= 0; mdaugMDress= 0; mdaugPhiDress= 0; 
 
    mdaugPtDressPhotos= 0; mdaugEtaDressPhotos= 0; mdaugMDressPhotos= 0; mdaugPhiDressPhotos= 0; 
+
+
+   mdaugPhotonPt =0;
+   mdaugPhotonEta=0;
+   mdaugPhotonPhi=0;
+   mdaugPhoton_rdR01_04 =0;
+   mdaugPhotonPtPhotos    = 0;
+   mdaugPhotonEtaPhotos   = 0;
+   mdaugPhotonPhiPhotos   = 0;
+   mdaugPhotonPhotos_rdR01_04  = 0;
+
+
 
    numberOfJets=0;
    numOfParticles=0; 

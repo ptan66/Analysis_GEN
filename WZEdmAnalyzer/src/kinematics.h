@@ -227,10 +227,16 @@ class _gen_DrellYan_ : public TObject {
   Double_t pdaugPtDress, pdaugEtaDress, pdaugMDress, pdaugPhiDress;
   Double_t pdaugPtDressPhotos, pdaugEtaDressPhotos, pdaugMDressPhotos, pdaugPhiDressPhotos;
 
+  Double_t pdaugPhotonPt, pdaugPhotonEta, pdaugPhotonPhi, pdaugPhoton_rdR01_04;
+  Double_t pdaugPhotonPtPhotos, pdaugPhotonEtaPhotos, pdaugPhotonPhiPhotos, pdaugPhotonPhotos_rdR01_04;
+
   Double_t mdaugPt, mdaugEta, mdaugM, mdaugPhi, mdaugID;
   Double_t mdaugPtFSR, mdaugEtaFSR, mdaugMFSR, mdaugPhiFSR;
   Double_t mdaugPtDress, mdaugEtaDress, mdaugMDress, mdaugPhiDress;
   Double_t mdaugPtDressPhotos, mdaugEtaDressPhotos, mdaugMDressPhotos, mdaugPhiDressPhotos;
+
+  Double_t mdaugPhotonPt, mdaugPhotonEta, mdaugPhotonPhi, mdaugPhoton_rdR01_04;
+  Double_t mdaugPhotonPtPhotos, mdaugPhotonEtaPhotos, mdaugPhotonPhiPhotos, mdaugPhotonPhotos_rdR01_04;
 
 
   Int_t    numberOfJets;

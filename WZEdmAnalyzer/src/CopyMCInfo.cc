@@ -441,9 +441,19 @@ void WZEdmAnalyzer::fillGenTTbar(Handle<reco::GenParticleCollection> &genParticl
 }
 
 
-const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, math::PtEtaPhiMLorentzVector &dressed) {
+const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, math::PtEtaPhiMLorentzVector &dressed, math::PtEtaPhiMLorentzVector &hardest_photon, double & ratio_dR01_04) {
 
   dressed = math::PtEtaPhiMLorentzVector(0, 0, 0, 0);
+
+  // math::PtEtaPhiMLorentzVector 
+  hardest_photon 
+    =  math::PtEtaPhiMLorentzVector(0, 
+  				    0, 
+  				    0, 
+  				    0 );
+  //  double ratio_dR01_04 = 0;
+  ratio_dR01_04 = 0;
+
 
   const  Candidate *bare_level =0;
   std::list< const Candidate * > alist;
@@ -546,9 +556,19 @@ const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, 
 
   //  std::cout << "number of photons = " << photons.size() << std::endl;
     
+
   while (photons.size()) {
       
     const Candidate *cand = photons.front();
+
+    if (cand->energy() > hardest_photon.energy()) {
+      hardest_photon =  math::PtEtaPhiMLorentzVector(cand->pt(), 
+						     cand->eta(), 
+						     cand->phi(), 
+						     0 );
+    }
+    
+
       
     if ( ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) < 0.1 ) {
       
@@ -557,7 +577,14 @@ const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, 
 					      cand->phi(), 
 					      0 );
       
+    }  else if ( (ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) >=0.1) && ( ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) < 0.4) ) {
+
+      if ( cand->energy()/bare_level->energy() >= ratio_dR01_04 ) {
+
+	ratio_dR01_04 =  cand->energy()/bare_level->energy();
+      }
     }
+    
     
     photons.pop_front();
   }
@@ -570,8 +597,17 @@ const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *alevel, 
 
 
 
-const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, math::PtEtaPhiMLorentzVector &dressed) {
+const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, math::PtEtaPhiMLorentzVector &dressed,  math::PtEtaPhiMLorentzVector &hardest_photon, double & ratio_dR01_04) {
 
+  // math::PtEtaPhiMLorentzVector 
+  hardest_photon 
+    =  math::PtEtaPhiMLorentzVector(0, 
+  				    0, 
+  				    0, 
+  				    0 );
+  //  double ratio_dR01_04 = 0;
+  ratio_dR01_04 = 0;
+  
   dressed = math::PtEtaPhiMLorentzVector(0, 0, 0, 0);
 
   if (!born_level) return 0;
@@ -623,6 +659,7 @@ const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, ma
     alist.pop_front();
   }
 
+
   if (bare_level) {
 
     dressed += math::PtEtaPhiMLorentzVector(bare_level->pt(), 
@@ -635,6 +672,13 @@ const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, ma
 
       const Candidate *cand = photons.front();
 
+      if (cand->energy() > hardest_photon.energy()) {
+	hardest_photon =  math::PtEtaPhiMLorentzVector(cand->pt(), 
+						       cand->eta(), 
+						       cand->phi(), 
+						       0 );
+      }
+
       if ( ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) < 0.1 ) {
 
 	dressed += math::PtEtaPhiMLorentzVector(cand->pt(), 
@@ -642,6 +686,12 @@ const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, ma
 						cand->phi(), 
 						0 );
 
+      } else if ( (ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) >=0.1) && ( ROOT::Math::VectorUtil::DeltaR(  cand->momentum(), bare_level->momentum() ) < 0.4) ) {
+
+	if ( cand->energy()/bare_level->energy() >= ratio_dR01_04 ) {
+
+	  ratio_dR01_04 =  cand->energy()/bare_level->energy();
+	}
       }
 
       photons.pop_front();
@@ -705,11 +755,19 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
   math::PtEtaPhiMLorentzVector dressed_pdaug(0, 0, 0, 0);
   math::PtEtaPhiMLorentzVector dressed_mdaug(0, 0, 0, 0);
 
+  math::PtEtaPhiMLorentzVector photon_pdaug(0, 0, 0, 0);
+  math::PtEtaPhiMLorentzVector photon_mdaug(0, 0, 0, 0);
+
+  double pratio_dR01_04 =0, mratio_dR01_04 = 0;
+
 
   math::PtEtaPhiMLorentzVector dressed_pdaug_photos(0, 0, 0, 0);
   math::PtEtaPhiMLorentzVector dressed_mdaug_photos(0, 0, 0, 0);
 
+  math::PtEtaPhiMLorentzVector photon_pdaug_photos(0, 0, 0, 0);
+  math::PtEtaPhiMLorentzVector photon_mdaug_photos(0, 0, 0, 0);
 
+  double pratio_dR01_04_photos =0, mratio_dR01_04_photos = 0;
 
   //  bool sherpa_like = false;
   //  std::cout << "a new event " << std::endl;
@@ -817,18 +875,18 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
 	if ( daug->pdgId() > 0 && abs(daug->pdgId()) <=16 ) {
 	  
 	  pdaug    = daug;
-	  pdaugFSR = genLevelLeptons( pdaug, dressed_pdaug);
+	  pdaugFSR = genLevelLeptons( pdaug, dressed_pdaug, photon_pdaug, pratio_dR01_04);
 
 	  //const Candidate *WZEdmAnalyzer::genLevelLeptonsPhotos( const Candidate *bare_level, math::PtEtaPhiMLorentzVector &dressed) {
-	  genLevelLeptonsPhotos(    daug, dressed_pdaug_photos);
+	  genLevelLeptonsPhotos(    daug, dressed_pdaug_photos,  photon_pdaug_photos, pratio_dR01_04_photos);
 
 
 	} else if ( daug->pdgId() < 0 && abs(daug->pdgId()) <=16 ) {
 	  
 	  mdaug    = daug;
-	  mdaugFSR = genLevelLeptons( mdaug, dressed_mdaug);
+	  mdaugFSR = genLevelLeptons( mdaug, dressed_mdaug, photon_mdaug, mratio_dR01_04 );
 
-	  genLevelLeptonsPhotos(    daug, dressed_mdaug_photos);
+	  genLevelLeptonsPhotos(    daug, dressed_mdaug_photos,  photon_mdaug_photos, mratio_dR01_04_photos );
 
 	}
 
@@ -864,11 +922,11 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
       if (id >=11 && id<=16) {
 	
 	pdaug = &p;
-	pdaugFSR = genLevelLeptons( pdaug, dressed_pdaug);
+	pdaugFSR = genLevelLeptons( pdaug, dressed_pdaug,  photon_pdaug, pratio_dR01_04);
 	
       } else if ( id>=-16 && id<=-11) {
 	mdaug = &p;
-	mdaugFSR = genLevelLeptons( mdaug, dressed_mdaug);
+	mdaugFSR = genLevelLeptons( mdaug, dressed_mdaug,  photon_mdaug, mratio_dR01_04);
 
       }
     }
@@ -930,9 +988,31 @@ void WZEdmAnalyzer::fillGenDrellYan(Handle<reco::GenParticleCollection> &genPart
   */
 
 
+  // fill in FSR related information
+  gendrellyan->pdaugPhotonPt = photon_pdaug.pt();
+  gendrellyan->pdaugPhotonEta = photon_pdaug.eta();
+  gendrellyan->pdaugPhotonPhi = photon_pdaug.phi();
+  gendrellyan->pdaugPhoton_rdR01_04 = pratio_dR01_04;
+ 
 
+  gendrellyan->pdaugPhotonPtPhotos = photon_pdaug_photos.pt();
+  gendrellyan->pdaugPhotonEtaPhotos = photon_pdaug_photos.eta();
+  gendrellyan->pdaugPhotonPhiPhotos = photon_pdaug_photos.phi();
+  gendrellyan->pdaugPhotonPhotos_rdR01_04 = pratio_dR01_04_photos;
+ 
 
+  gendrellyan->mdaugPhotonPt = photon_mdaug.pt();
+  gendrellyan->mdaugPhotonEta = photon_mdaug.eta();
+  gendrellyan->mdaugPhotonPhi = photon_mdaug.phi();
+  gendrellyan->mdaugPhoton_rdR01_04 = mratio_dR01_04;
+ 
 
+  gendrellyan->mdaugPhotonPtPhotos = photon_mdaug_photos.pt();
+  gendrellyan->mdaugPhotonEtaPhotos = photon_mdaug_photos.eta();
+  gendrellyan->mdaugPhotonPhiPhotos = photon_mdaug_photos.phi();
+  gendrellyan->mdaugPhotonPhotos_rdR01_04 = mratio_dR01_04_photos;
+ 
+ 
 
   if (mom1) {
 
