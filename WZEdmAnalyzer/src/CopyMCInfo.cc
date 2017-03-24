@@ -667,6 +667,7 @@ const Candidate *WZEdmAnalyzer::genLevelLeptons( const Candidate *born_level, ma
 					    bare_level->phi(), 
 					    0 );
     
+    if (photons.size()>2) {std::cout << "more than 2 photos are emitted" << std::endl; }
 
     while (photons.size()) {
 
