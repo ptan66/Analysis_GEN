@@ -81,7 +81,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:mc', '')
 
 
 process.generator = cms.EDFilter("Pythia8HadronizerFilter",
-	maxEventsToPrint = cms.untracked.int32(20),
+	maxEventsToPrint = cms.untracked.int32(1),
 	pythiaPylistVerbosity = cms.untracked.int32(1),
 	filterEfficiency = cms.untracked.double(1.0),
 	pythiaHepMCVerbosity = cms.untracked.bool(False),
@@ -100,14 +100,15 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
 		'SpaceShower:pTmaxMatch = 2',
 		'TimeShower:pTmaxMatch  = 2'
 		),
-	    pythia8CUEP8M1Settings = cms.vstring(
+	    pythia8CUETP8M1UpVariationSettings = cms.vstring(
 		'Tune:pp 14',
 		'Tune:ee 7',
-		'MultipartonInteractions:pT0Ref=2.4024',
-		'MultipartonInteractions:ecmPow=0.25208',
-		'MultipartonInteractions:expPow=1.6',
+		'MultipartonInteractions:pT0Ref=1.8238e+00',
+		'MultipartonInteractions:ecmPow=2.5208e-01',
+		'MultipartonInteractions:expPow=3.230749e+00',
+		'ColourReconnection:range=7.600778e+00',
 		),
-	    parameterSets = cms.vstring('pythia8_example07', 'pythia8CUEP8M1Settings')
+	    parameterSets = cms.vstring('pythia8_example07', 'pythia8CUETP8M1UpVariationSettings')
 	)
     )
 

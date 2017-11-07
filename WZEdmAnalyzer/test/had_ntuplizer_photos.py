@@ -154,5 +154,5 @@ process.TFileService = cms.Service("TFileService",
 
 
 #process.e = cms.EndPath(process.RAWSIMoutput)
-
+#+process.printList
 process.p = cms.Path(process.generator+process.randomEngineStateProducer+process.VtxSmeared+process.genParticles+process.printList+process.analyzer)

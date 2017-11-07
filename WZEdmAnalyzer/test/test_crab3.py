@@ -7,15 +7,19 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 
 config.JobType.pluginName = 'Analysis'
-#config.JobType.psetName = 'had_ntuplizer.py'
-config.JobType.psetName = 'had_ntuplizer_pythia8_photos.py'
+
+#config.JobType.psetName = 'had_ntuplizer_pythia8.py'
+#config.JobType.psetName = 'had_ntuplizer_pythia8_photos.py'
+#config.JobType.psetName = 'had_ntuplizer_pythia8_tuneup.py'
+config.JobType.psetName = 'had_ntuplizer_pythia8_tunedown.py'
 
 
 
-#config.Data.outputPrimaryDataset = 'Z_mm_CT10_8TeV'
-#config.Data.outputPrimaryDataset = 'Z_mm_CT10_8TeV_photos'
-#config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV'
-config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_pythia8_photos'
+
+#config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_pythia8'
+#config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_pythia8_photos'
+#config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_pythia8_tuneup'
+config.Data.outputPrimaryDataset = 'Z_ee_NNPDF30_8TeV_pythia8_tunedown'
 #config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/zmumu_powheg_lhes.txt').readlines()
 #config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhe_patch2.txt').readlines()
 config.Data.userInputFiles = open('/uscms_data/d2/ptan/work/generator/generators/PowhegBOXV2/powheg_lhes.txt').readlines()

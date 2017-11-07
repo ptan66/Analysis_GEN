@@ -122,6 +122,10 @@ class WZEdmAnalyzer : public edm::EDAnalyzer {
   void   fillGenTTbar(Handle<reco::GenParticleCollection> &genParticles,  _gen_ttbar_ *genttbar);
   void   fillGenDrellYan(Handle<reco::GenParticleCollection> &genParticles, const LHEEventProduct * evt,  _gen_DrellYan_ *gendrellyan);
 
+  const Candidate *bornLevelParticle( const Candidate *init_p, bool address_down, bool match_initId=true, bool isdebug=false);
+  const Candidate *showeredParticle(  const Candidate *particle, const Candidate *leading_jet, const Candidate *leading_photon=0);
+
+
   const Candidate *genLevelLeptons(       const Candidate *born_level, math::PtEtaPhiMLorentzVector &dressed,  math::PtEtaPhiMLorentzVector &hardest_photon, double & ratio_dR01_04);
 
   // for FSR photos produced with PHOTOS
