@@ -1,7 +1,7 @@
 #include "assert.h"
 #include "math.h"
 
-#include "kinematics.h"
+#include "Analysis_GEN/WZEdmAnalyzer/interface/kinematics.h"
 
 ClassImp(_gen_ttbar_)
 ClassImp(_gen_DrellYan_)

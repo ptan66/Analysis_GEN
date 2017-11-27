@@ -1,0 +1,33 @@
+<lcgdict>
+  <class name="_event_filterBit_"/>
+  <class name="_gen_eventInfo_"/> 
+  <class name="_gen_ttbar_"/> 
+  <class name="_gen_DrellYan_"/> 
+  <class name="_mc_process_"/> 
+  <class name="_genwz_"/> 
+  <class name="_vec4_"/> 
+  <class name="_trg_bits_"/> 
+  <class name="_hlt_info_"/> 
+  <class name="_met_"/> 
+  <class name="_mets_"/> 
+  <class name="_dileadingjets_"/> 
+  <class name="_run_info_"/> 
+  <class name="_vertex_"/> 
+  <class name="_l1_obj_"/> 
+  <class name="_supercluster_"/> 
+  <class name="_photon_"/> 
+  <class name="_electron_"/> 
+  <class name="_beam_spot_"/> 
+  <class name="_track_"/> 
+  <class name="_muon_"/> 
+  <class name="_jet_"/> 
+  <class name="_di_jet_"/> 
+  <class name="_gen_jet_"/> 
+  <class name="_W_"/> 
+  <class name="_di_lepton_"/> 
+  <class name="_tri_lepton_"/> 
+  <class name="_quar_lepton_"/> 
+  <class name="_lepton_photon_"/> 
+  <class name="_dilepton_photon_"/> 
+  <class name="_event_"/> 
+</lcgdict>
