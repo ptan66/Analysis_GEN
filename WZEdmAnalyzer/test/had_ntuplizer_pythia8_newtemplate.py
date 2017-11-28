@@ -1,16 +1,9 @@
 # Auto generated configuration file
 # using: 
-# Revision: 1.381.2.28 
-# Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v 
-# with command line options: Configuration/Powheg/Hadronizer_TuneZ2star_8TeV_generic_LHE_pythia_cff.py -s GEN --datatier GEN --eventcontent RAWSIM --conditions auto:mc --no_exec --filein file:DYToMuMuV0.lhe
+# Revision: 1.19 
+# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+# with command line options: Hadronizer_TuneCUETP8M1_13TeV_generic_LHE_pythia8_cff.py --filein file://eos/uscms/store/user/ptan/LHEfiles/Powheg/DYToEE_M50-8000_Z/lhe_10000_1110.lhe --fileout file:had.root --mc --eventcontent RAWSIM --datatier GEN --conditions auto:mc --beamspot Realistic8TeVCollision --step GEN --python_filename had_ntuplizer_pythia8_newtemplate.py --no_exec
 import FWCore.ParameterSet.Config as cms
-
-import FWCore.ParameterSet.VarParsing as VarParsing
-
-#options = VarParsing.VarParsing('analysis')
-#options.register('output',  '',  VarParsing.VarParsing.multiplicity.singleton, VarParsing.VarParsing.varType.string, '') 
-#options.register('infile',   '', VarParsing.VarParsing.multiplicity.singleton, VarParsing.VarParsing.varType.string, '') 
-#options.parseArguments()
 
 process = cms.Process('GEN')
 
@@ -21,36 +14,23 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic8TeVCollision_cfi')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
-
-process.RandomNumberGeneratorService.externalLHEProducer.initialSeed = 1234
-from IOMC.RandomEngine.RandomServiceHelper import RandomNumberServiceHelper
-randSvc = RandomNumberServiceHelper(process.RandomNumberGeneratorService)
-randSvc.populate()
-
-
-
-process.printList = cms.EDAnalyzer("ParticleListDrawer",
-    src = cms.InputTag("genParticles"),
-    maxEventsToPrint = cms.untracked.int32(10)
-)
-
-
-
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(1)
 )
 
 # Input source
 process.source = cms.Source("LHESource",
-	fileNames = cms.untracked.vstring("file://eos/uscms/store/user/ptan/LHEfiles/Powheg/DYToEE_M50-8000_Z/lhe_10000_1110.lhe")
+    dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
+    fileNames = cms.untracked.vstring('file://eos/uscms/store/user/ptan/LHEfiles/Powheg/DYToEE_M50-8000_Z/lhe_10000_1110.lhe'),
+    inputCommands = cms.untracked.vstring('keep *', 
+        'drop LHEXMLStringProduct_*_*_*')
 )
 
 process.options = cms.untracked.PSet(
@@ -59,24 +39,27 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.1 $'),
-    annotation = cms.untracked.string('runs Z2* Pythia6'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/EightTeV/Hadronizer_TuneZ2star_8TeV_generic_LHE_pythia_cff.py,v $')
+    annotation = cms.untracked.string('Hadronizer_TuneCUETP8M1_13TeV_generic_LHE_pythia8_cff.py nevts:1'),
+    name = cms.untracked.string('Applications'),
+    version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
+
 process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
-    splitLevel = cms.untracked.int32(0),
-    eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
-    outputCommands = process.RAWSIMEventContent.outputCommands,
-    fileName = cms.untracked.string('had.root'),
-    dataset = cms.untracked.PSet(
-        filterName = cms.untracked.string(''),
-        dataTier = cms.untracked.string('GEN')
+    SelectEvents = cms.untracked.PSet(
+        SelectEvents = cms.vstring('generation_step')
     ),
-#    SelectEvents = cms.untracked.PSet(
-#        SelectEvents = cms.vstring('generation_step')
-#    )
+    compressionAlgorithm = cms.untracked.string('LZMA'),
+    compressionLevel = cms.untracked.int32(9),
+    dataset = cms.untracked.PSet(
+        dataTier = cms.untracked.string('GEN'),
+        filterName = cms.untracked.string('')
+    ),
+    eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
+    fileName = cms.untracked.string('file:had.root'),
+    outputCommands = process.RAWSIMEventContent.outputCommands,
+    splitLevel = cms.untracked.int32(0)
 )
 
 # Additional output definition
@@ -130,7 +113,6 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
     )
 
 
-#ntuplizer
 
 process.analyzer = cms.EDAnalyzer(
     "WZEdmAnalyzer",
@@ -142,7 +124,7 @@ process.analyzer = cms.EDAnalyzer(
 
 
     GeneratorLevelTag         = cms.string("generator"),
-    LHEEventProductTag        = cms.InputTag("externalLHEProducer")
+    LHEEventProductTag        = cms.InputTag("source")
     )
 
 
@@ -156,9 +138,26 @@ process.TFileService = cms.Service("TFileService",
 
 
 
+process.ProductionFilterSequence = cms.Sequence(process.generator )
+
+# Path and EndPath definitions
+process.generation_step = cms.Path(process.pgen)
+process.genfiltersummary_step = cms.EndPath(process.genFilterSummary)
+process.endjob_step = cms.EndPath(process.endOfProcess)
+process.ntuplizer_step = cms.EndPath(process.analyzer)
+process.RAWSIMoutput_step = cms.EndPath(process.RAWSIMoutput)
+
+# Schedule definition
+process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.endjob_step, process.ntuplizer_step)
+# process.RAWSIMoutput_step)
+# filter all path with the production filter sequence
+for path in process.paths:
+	getattr(process,path)._seq = process.ProductionFilterSequence * getattr(process,path)._seq 
 
 
-process.e = cms.EndPath(process.RAWSIMoutput)
+# Customisation from command line
 
-process.p = cms.Path(process.generator+process.randomEngineStateProducer+process.VtxSmeared+process.genParticles+process.printList+process.analyzer)
-#process.p = cms.Path(process.generator+process.randomEngineStateProducer+process.genParticles+process.printList+process.analyzer)
+# Add early deletion of temporary data products to reduce peak memory need
+from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
+process = customiseEarlyDelete(process)
+# End adding early deletion

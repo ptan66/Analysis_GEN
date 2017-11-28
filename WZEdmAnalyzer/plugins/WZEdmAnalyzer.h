@@ -148,12 +148,21 @@ class WZEdmAnalyzer : public edm::EDAnalyzer {
 
   float              avgInstLumi;
 
-  edm::InputTag      GeneratorLevelTag_;
-  edm::InputTag      LHEEventProductTag_;
+  //  edm::InputTag      GeneratorLevelTag_;
+  // edm::InputTag      LHEEventProductTag_;
+
+  edm::EDGetTokenT<GenEventInfoProduct>     GeneratorLevelToken_;
+  edm::EDGetTokenT<LHEEventProduct>         LHEEventProductToken_;
 
 
   Handle<edm::HepMCProduct>                       mcTruth;
+
+  edm::EDGetTokenT<reco::GenParticleCollection>   GenParticleCollectionToken_;     
   Handle<reco::GenParticleCollection>             genParticles;
+
+
+
+  edm::EDGetTokenT<GenEventInfoProduct>           genEventInfoToken_;
   edm::Handle<GenEventInfoProduct>                genEventInfo;
 
   Handle<LHEEventProduct>                         lheEventInfo;

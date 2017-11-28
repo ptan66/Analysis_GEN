@@ -129,14 +129,21 @@ WZEdmAnalyzer::WZEdmAnalyzer(const edm::ParameterSet& iConfig) :
   _is_data(                    iConfig.getParameter<bool>("DATA")),
   _gen_only(                   iConfig.getParameter<bool>("GEN_ONLY")),
   _mc_signal(                  iConfig.getParameter<bool>("MC_SIGNAL")),
-  GeneratorLevelTag_(          iConfig.getParameter<std::string>("GeneratorLevelTag")),
-  LHEEventProductTag_(         iConfig.getParameter<edm::InputTag>("LHEEventProductTag")) {
+  GeneratorLevelToken_(         consumes<GenEventInfoProduct> (iConfig.getParameter<std::string>("GeneratorLevelTag"))),
+  LHEEventProductToken_(        consumes<LHEEventProduct> (iConfig.getParameter<edm::InputTag>("LHEEventProductTag"))) {
+
+  //  GeneratorLevelTag_(          iConfig.getParameter<std::string>("GeneratorLevelTag")),
+  //  LHEEventProductTag_(         iConfig.getParameter<edm::InputTag>("LHEEventProductTag")) {
 
   //,
   //  out(                         iConfig.getParameter<std::string>("out")),
   //  open(                        iConfig.getParameter<std::string>("open")),
   //  pdf(                         iConfig.getParameter<std::string>("pdf")),
   //  subset(                      iConfig.getParameter<int>("subset")) {
+
+
+  GenParticleCollectionToken_      = consumes<reco::GenParticleCollection>(edm::InputTag( "genParticles" ));
+  genEventInfoToken_               = consumes<GenEventInfoProduct>(edm::InputTag("generator"));
 
 
   this->displayConfig();
@@ -252,9 +259,10 @@ WZEdmAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   _mc_process_ *myMCTruth =  myEvent->getMCInfo();    
   //  myGenWZ   =  myEvent->getGenWZ(); 
 
-  iEvent.getByLabel( "genParticles",        genParticles );
-  bool hasLHE = //iEvent.getByType( lheEventInfo );
-    iEvent.getByLabel( LHEEventProductTag_, lheEventInfo );
+
+  iEvent.getByToken( GenParticleCollectionToken_,      genParticles );
+
+  bool hasLHE = iEvent.getByToken( LHEEventProductToken_, lheEventInfo ); 
 
   if (hasLHE)  copyLHEweights( myEvent, lheEventInfo.product() );
 
